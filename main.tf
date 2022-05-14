@@ -22,7 +22,7 @@ locals {
   engine_version              = lookup(var.aws_rds_aurora_cluster_config, "engine_version", var.engine_version)
   rds_security_group_id       = aws_security_group.aurora_postgresql_security_group.id
   rds_enhanced_monitoring_arn = var.create_monitoring_role ? join("", [aws_iam_role.rds_enhanced_monitoring.arn]) : var.monitoring_role_arn
-  cluster_name                = format("aws-aurorapgsl-%s-%s", var.environment, lookup(var.aws_rds_aurora_cluster_config, "name", var.name))
+  name                = format("aws-aurorapgsl-%s-%s", var.environment, lookup(var.aws_rds_aurora_cluster_config, "name", var.name))
   instances = {
     1 = {
       instance_class      = lookup(var.aws_rds_aurora_cluster_config, "instance_class", var.instance_class)
@@ -61,7 +61,7 @@ resource "aws_db_subnet_group" "aurora_subnet_group" {
 
 resource "aws_rds_cluster" "aurora_postgresql_cluster" {
 
-  cluster_identifier                  = local.cluster_name
+  cluster_identifier                  = local.name
   engine                              = lookup(var.aws_rds_aurora_cluster_config, "engine", var.engine)
   engine_mode                         = lookup(var.aws_rds_aurora_cluster_config, "engine_mode", var.engine_mode)
   engine_version                      = lookup(var.aws_rds_aurora_cluster_config, "engine_version", var.engine_version)
