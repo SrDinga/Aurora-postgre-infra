@@ -22,7 +22,7 @@ locals {
   engine_version              = lookup(var.aws_rds_aurora_cluster_config, "engine_version", var.engine_version)
   rds_security_group_id       = aws_security_group.aurora_postgresql_security_group.id
   rds_enhanced_monitoring_arn = var.create_monitoring_role ? join("", [aws_iam_role.rds_enhanced_monitoring.arn]) : var.monitoring_role_arn
-  name                        = format("aws-aurorapgsl-%s-%s", var.environment, lookup(var.aws_rds_aurora_cluster_config, "name", var.name))
+  cluster_name                = format("aws-aurorapgsl-%s-%s", var.environment, lookup(var.aws_rds_aurora_cluster_config, "name", var.name))
   instances = {
     1 = {
       instance_class      = lookup(var.aws_rds_aurora_cluster_config, "instance_class", var.instance_class)
@@ -61,7 +61,7 @@ resource "aws_db_subnet_group" "aurora_subnet_group" {
 
 resource "aws_rds_cluster" "aurora_postgresql_cluster" {
 
-  cluster_identifier                  = local.name
+  cluster_identifier                  = local.cluster_name
   engine                              = lookup(var.aws_rds_aurora_cluster_config, "engine", var.engine)
   engine_mode                         = lookup(var.aws_rds_aurora_cluster_config, "engine_mode", var.engine_mode)
   engine_version                      = lookup(var.aws_rds_aurora_cluster_config, "engine_version", var.engine_version)
@@ -131,17 +131,17 @@ resource "aws_rds_cluster_instance" "aurora_postgresql_cluster_instance" {
 
 # Note: when consuming this module the "rds_parameter_group" variables are passed based on the version engiine
 resource "aws_db_parameter_group" "cluster_instance_parameter" {
-  name_prefix = "${local.name}-aurora-db-parameter-group"
+  name_prefix = "${local.cluster_name}-aurora-db-parameter-group"
   family      = lookup(var.aws_rds_aurora_cluster_config, "rds_parameter_group", var.rds_parameter_group)
-  description = "${local.name}-aurora-db-parameter-group"
+  description = "${local.cluster_name}-aurora-db-parameter-group"
 
   tags = var.aws_aurora_postgresql_cluster_tags
 }
 
 resource "aws_rds_cluster_parameter_group" "cluster_parameter" {
-  name_prefix = "${local.name}-aurora-cluster-parameter-group"
+  name_prefix = "${local.cluster_name}-aurora-cluster-parameter-group"
   family      = lookup(var.aws_rds_aurora_cluster_config, "rds_parameter_group", var.rds_parameter_group)
-  description = "${local.name}-aurora-cluster-parameter-group"
+  description = "${local.cluster_name}-aurora-cluster-parameter-group"
 
   tags = var.aws_aurora_postgresql_cluster_tags
 }
@@ -268,7 +268,7 @@ resource "aws_security_group_rule" "allowed_connections_from_security_groups" {
 
 resource "aws_security_group_rule" "cidr_ingress" {
 
-  for_each    = var.allowed_cidr_blocks
+  for_each    = toset(var.allowed_cidr_blocks)
   description = "From allowed CIDRs"
   type        = "ingress"
   from_port   = lookup(var.aws_rds_aurora_cluster_config, "port", var.port)
