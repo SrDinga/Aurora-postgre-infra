@@ -131,17 +131,17 @@ resource "aws_rds_cluster_instance" "aurora_postgresql_cluster_instance" {
 
 # Note: when consuming this module the "rds_parameter_group" variables are passed based on the version engiine
 resource "aws_db_parameter_group" "cluster_instance_parameter" {
-  name = "${local.name}-aurora-db-parameter-group"
+  name = "${local.name}-aurora_db_parameter_group"
   family      = lookup(var.aws_rds_aurora_cluster_config, "rds_parameter_group", var.rds_parameter_group)
-  description = "${local.name}-aurora-db-parameter-group"
+  description = "${local.name}-aurora_db_parameter_group"
 
   tags = var.aws_aurora_postgresql_cluster_tags
 }
 
 resource "aws_rds_cluster_parameter_group" "cluster_parameter" {
-  name = "${local.name}aurora-cluster-parameter-group"
+  name = "${local.name}aurora_cluster_parameter_group"
   family      = lookup(var.aws_rds_aurora_cluster_config, "rds_parameter_group", var.rds_parameter_group)
-  description = "${local.name}}-aurora-cluster-parameter-group"
+  description = "${local.name}}-aurora_cluster_parameter_group"
 
   tags = var.aws_aurora_postgresql_cluster_tags
 }
