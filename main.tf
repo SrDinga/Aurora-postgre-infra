@@ -131,17 +131,17 @@ resource "aws_rds_cluster_instance" "aurora_postgresql_cluster_instance" {
 
 # Note: when consuming this module the "rds_parameter_group" variables are passed based on the version engiine
 resource "aws_db_parameter_group" "cluster_instance_parameter" {
-  name_prefix = "${local.name}-aurora-db-parameter-group"
+  name_prefix = "${local.name}-db-parameter-group"
   family      = lookup(var.aws_rds_aurora_cluster_config, "rds_parameter_group", var.rds_parameter_group)
-  description = "${local.name}-aurora-db-parameter-group"
+  description = "${local.name}-db-parameter-group"
 
   tags = var.aws_aurora_postgresql_cluster_tags
 }
 
 resource "aws_rds_cluster_parameter_group" "cluster_parameter" {
-  name_prefix = "${local.name}-aurora-cluster-parameter-group"
+  name_prefix = "${local.name}-cluster-parameter-group"
   family      = lookup(var.aws_rds_aurora_cluster_config, "rds_parameter_group", var.rds_parameter_group)
-  description = "${local.name}-aurora-cluster-parameter-group"
+  description = "${local.name}-cluster-parameter-group"
 
   tags = var.aws_aurora_postgresql_cluster_tags
 }
@@ -246,8 +246,8 @@ resource "aws_appautoscaling_policy" "aurora_postgresql_cluster_scaling_policy" 
 
 resource "aws_security_group" "aurora_postgresql_security_group" {
   # name        = "${local.name}-security-group"
-  name        = var.security_group_use_name_prefix ? null : local. name 
-  name_prefix = var.security_group_use_name_prefix ? "${local. name }-" : null
+  name        = var.security_group_use_name_prefix ? null : local.name 
+  name_prefix = var.security_group_use_name_prefix ? "${local.name }-" : null
   vpc_id      = lookup(var.aws_rds_aurora_cluster_config, "vpc_id", var.vpc_id)
   description = lookup(var.aws_rds_aurora_cluster_config, "security_group_description", var.security_group_description)
   tags        = var.aws_aurora_postgresql_cluster_tags
