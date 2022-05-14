@@ -22,11 +22,6 @@ variable "aws_rds_aurora_cluster_config" {
   default     = {}
 }
 
-variable "name" {
-  description = "Name used across resources created"
-  type        = string
-  default     = "aurora-cluster"
-}
 
 variable "database_name" {
   description = "Name of the database"
