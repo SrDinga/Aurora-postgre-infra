@@ -49,7 +49,7 @@ locals {
 
 resource "aws_db_subnet_group" "aurora_subnet_group" {
   name        = lookup(var.aws_rds_aurora_cluster_config, "db_subnet_group_name", var.db_subnet_group_name)
-  description = "Subnet group for the ${local.name  } DB"
+  description = "Subnet group for the ${local.cluster_name  } DB"
   subnet_ids  = lookup(var.aws_rds_aurora_cluster_config, "subnet_ids", var.subnet_ids)
 
   tags = var.aws_aurora_postgresql_cluster_tags
@@ -61,7 +61,7 @@ resource "aws_db_subnet_group" "aurora_subnet_group" {
 
 resource "aws_rds_cluster" "aurora_postgresql_cluster" {
 
-  cluster_identifier                  = local.cluste_name 
+  cluster_identifier                  = local.cluster_name 
   engine                              = lookup(var.aws_rds_aurora_cluster_config, "engine", var.engine)
   engine_mode                         = lookup(var.aws_rds_aurora_cluster_config, "engine_mode", var.engine_mode)
   engine_version                      = lookup(var.aws_rds_aurora_cluster_config, "engine_version", var.engine_version)
@@ -246,8 +246,8 @@ resource "aws_appautoscaling_policy" "aurora_postgresql_cluster_scaling_policy" 
 
 resource "aws_security_group" "aurora_postgresql_security_group" {
   # name        = "${local.cluster_name }-security-group"
-  name        = var.security_group_use_name_prefix ? null : local.name 
-  name_prefix = var.security_group_use_name_prefix ? "${local.name  }-" : null
+  name        = var.security_group_use_name_prefix ? null : local.cluster_name
+  name_prefix = var.security_group_use_name_prefix ? "${local.cluster_name  }-" : null
   vpc_id      = lookup(var.aws_rds_aurora_cluster_config, "vpc_id", var.vpc_id)
   description = lookup(var.aws_rds_aurora_cluster_config, "security_group_description", var.security_group_description)
   tags        = var.aws_aurora_postgresql_cluster_tags
