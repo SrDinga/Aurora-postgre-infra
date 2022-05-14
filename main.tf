@@ -139,9 +139,9 @@ resource "aws_db_parameter_group" "cluster_instance_parameter" {
 }
 
 resource "aws_rds_cluster_parameter_group" "cluster_parameter" {
-  name = "${var.name}-aurora-cluster-parameter-group"
+  name = "${var.name}-cluster-parameter-group"
   family      = lookup(var.aws_rds_aurora_cluster_config, "rds_parameter_group", var.rds_parameter_group)
-  description = "${var.name}-aurora-cluster-parameter-group"
+  description = "aurora-${var.name}-cluster-parameter-group"
 
   tags = var.aws_aurora_postgresql_cluster_tags
 }
