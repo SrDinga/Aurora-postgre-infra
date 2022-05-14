@@ -77,7 +77,7 @@ resource "aws_rds_cluster" "aurora_postgresql_cluster" {
   db_subnet_group_name                = aws_db_subnet_group.aurora_subnet_group.name
   vpc_security_group_ids              = [aws_security_group.aurora_postgresql_security_group.id]
   storage_encrypted                   = lookup(var.aws_rds_aurora_cluster_config, "storage_encrypted", var.storage_encrypted)
-  db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.cluster_parameter
+  /* db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.cluster_parameter */
   iam_database_authentication_enabled = lookup(var.aws_rds_aurora_cluster_config, "iam_database_authentication_enabled", var.iam_database_authentication_enabled)
   copy_tags_to_snapshot               = lookup(var.aws_rds_aurora_cluster_config, "copy_tags_to_snapshot", var.copy_tags_to_snapshot)
   enabled_cloudwatch_logs_exports     = lookup(var.aws_rds_aurora_cluster_config, "enabled_cloudwatch_logs_exports", var.enabled_cloudwatch_logs_exports)
