@@ -104,7 +104,7 @@ resource "aws_rds_cluster_instance" "aurora_postgresql_cluster_instance" {
   instance_class                        = lookup(each.value, "instance_class", var.instance_class)
   publicly_accessible                   = lookup(each.value, "publicly_accessible", var.publicly_accessible)
   db_subnet_group_name                  = aws_db_subnet_group.aurora_subnet_group.name
-  db_parameter_group_name               = aws_db_parameter_group.cluster_instance_parameter.id
+  /* db_parameter_group_name               = aws_db_parameter_group.cluster_instance_parameter.id */
   monitoring_role_arn                   = local.rds_enhanced_monitoring_arn
   monitoring_interval                   = lookup(each.value, "monitoring_interval", var.monitoring_interval)
   availability_zone                     = lookup(each.value, "availability_zone", null)
