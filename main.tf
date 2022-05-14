@@ -246,8 +246,8 @@ resource "aws_appautoscaling_policy" "aurora_postgresql_cluster_scaling_policy" 
 
 resource "aws_security_group" "aurora_postgresql_security_group" {
   # name        = "${local.name}-security-group"
-  name        = var.security_group_use_name_prefix ? null : local. cluster_name 
-  name_prefix = var.security_group_use_name_prefix ? "${local. cluster_name }-" : null
+  name        = var.security_group_use_name_prefix ? null : local. name 
+  name_prefix = var.security_group_use_name_prefix ? "${local. name }-" : null
   vpc_id      = lookup(var.aws_rds_aurora_cluster_config, "vpc_id", var.vpc_id)
   description = lookup(var.aws_rds_aurora_cluster_config, "security_group_description", var.security_group_description)
   tags        = var.aws_aurora_postgresql_cluster_tags
